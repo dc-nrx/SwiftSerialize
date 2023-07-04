@@ -10,15 +10,22 @@ import Foundation
 public extension JSONDecoder {
 	
 	static func custom(
-		dateDecoding: JSONDecoder.DateDecodingStrategy = .iso8601,
-		keyDecoding: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase
+		date dataStrategy: JSONDecoder.DateDecodingStrategy = .iso8601,
+		key keyStrategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase
 	) -> JSONDecoder {
 		let result = JSONDecoder()
-		result.dateDecodingStrategy = dateDecoding
-		result.keyDecodingStrategy = keyDecoding
+		result.dateDecodingStrategy = dataStrategy
+		result.keyDecodingStrategy = keyStrategy
 		return result
 	}
 	
+	static func custom(
+		dateFormat: String,
+		key keyStrategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase
+	) -> JSONDecoder {
+		custom(date: .formatted(.format(dateFormat)), key: keyStrategy)
+	}
+
 }
 
 public extension DateFormatter {
@@ -26,6 +33,7 @@ public extension DateFormatter {
 	static func format(
 		_ formatString: String
 	) -> DateFormatter {
+		
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = formatString
 		return dateFormatter
