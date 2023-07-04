@@ -13,11 +13,11 @@ public extension Data {
 	 From a package, set bundle to `Bundle.module`.
 	 */
 	init(
-		name: String,
+		file: String,
 		extension ext: String = "json",
 		bundle: Bundle
 	) throws {
-		guard let url = bundle.url(forResource: name, withExtension: ext) else {
+		guard let url = bundle.url(forResource: file, withExtension: ext) else {
 			throw CocoaError(.fileNoSuchFile)
 		}
 		self = try Data(contentsOf: url)
@@ -28,12 +28,12 @@ public extension Data {
 public extension Decodable {
 	
 	init(
-		name: String,
+		file: String,
 		extension ext: String = "json",
 		bundle: Bundle,
 		decoder: JSONDecoder = .custom()
 	) throws {
-		let data = try Data(name: name, extension: ext, bundle: bundle)
+		let data = try Data(file: file, extension: ext, bundle: bundle)
 		self = try decoder.decode(Self.self, from: data)		
 	}
 }
